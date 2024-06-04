@@ -1,6 +1,7 @@
 # Intermediates
 /linux
 /linux-1*
+/linux-6*
 /*.tar.gz
 
 # Outputs

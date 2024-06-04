@@ -1,0 +1,5 @@
+# Please note that the 6.6.20 kernel
+# configuration includes advanced network
+# functionality embedded on the kernel
+# https://downloads.raspberrypi.com/raspios_full_armhf/release_notes.txt
+COMMIT=6f16847710cc0502450788b9f12f0a14d3429668

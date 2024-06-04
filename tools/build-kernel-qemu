@@ -52,7 +52,7 @@ fi
 if [ -n "$INSTALL_PACKAGES" ] ; then
 	echo "NOT EMPTY"
 	sudo apt-get update
-	sudo apt-get install git bc libncurses5-dev gcc-arm-linux-gnueabihf flex bison
+	sudo apt-get install wget build-essential git bc libncurses-dev gcc-arm-linux-gnueabihf flex bison
 fi
 
 mkdir -p $BUILD_DIR $TARGET_DIR
@@ -106,7 +106,7 @@ fi
 export MAKEFLAGS="$MAKEFLAGS -j$(nproc)"
 
 KERNEL_VERSION=$(make kernelversion)
-KERNEL_TARGET_FILE_NAME=$TARGET_DIR/qemu-kernel-$KERNEL_VERSION
+KERNEL_TARGET_FILE_NAME=$TARGET_DIR/kernel-qemu-$KERNEL_VERSION
 MODULES_INSTALL_PATH=$TARGET_DIR/qemu-kernel-$KERNEL_VERSION-modules
 if [ -e "../linux-arm-$KERNEL_VERSION.patch" ]; then
     patch -p1 < $SOURCE_DIR/linux-arm-$KERNEL_VERSION.patch
@@ -122,7 +122,8 @@ if  [ -z  `command -v  ${TOOLCHAIN}-gcc` ]  ; then
     #+NOTE: you need to  install  the toolchain first ...
     echo -e "Cannot found Toolchain cross compiler  <${TOOLCHAIN}> missing ... !"
     exit -1 
-fi 
+fi
+
 cat >> .config << EOF
 CONFIG_CROSS_COMPILE="$TOOLCHAIN"
 EOF
@@ -145,8 +146,18 @@ fi
 cat $SOURCE_DIR/config_ip_tables >> .config
 cat $SOURCE_DIR/config_loopdev >> .config
 
-make -k ARCH=arm CROSS_COMPILE=${TOOLCHAIN}- $KERNEL_MAKE_CONFIG
+# echo -e "##################################################################"
+# echo    " make -k ARCH=arm CROSS_COMPILE=${TOOLCHAIN}- $KERNEL_MAKE_CONFIG"
+# echo -e "##################################################################" 
+
+# make -k ARCH=arm CROSS_COMPILE=${TOOLCHAIN}- $KERNEL_MAKE_CONFIG
+
+echo -e "##################################################################"
+echo    " make -k ARCH=arm CROSS_COMPILE=${TOOLCHAIN}- bzImage dtbs"
+echo -e "##################################################################" 
+
 make -k ARCH=arm CROSS_COMPILE=${TOOLCHAIN}- bzImage dtbs
+
 cp arch/arm/boot/zImage $KERNEL_TARGET_FILE_NAME
 if [ -e arch/arm/boot/dts/versatile-pb.dtb ] ; then
     cp arch/arm/boot/dts/versatile-pb.dtb $TARGET_DIR
