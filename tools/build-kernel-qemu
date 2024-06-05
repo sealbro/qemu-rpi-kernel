@@ -124,7 +124,9 @@ if  [ -z  `command -v  ${TOOLCHAIN}-gcc` ]  ; then
     exit -1 
 fi
 
-cat > .config << EOF
+make ARCH=arm CROSS_COMPILE=${TOOLCHAIN}- versatile_defconfig
+
+cat >> .config << EOF
 CONFIG_CROSS_COMPILE="$TOOLCHAIN"
 EOF
 
@@ -145,8 +147,6 @@ fi
 
 cat $SOURCE_DIR/config_ip_tables >> .config
 cat $SOURCE_DIR/config_loopdev >> .config
-
-make ARCH=arm CROSS_COMPILE=${TOOLCHAIN}- versatile_defconfig
 
 echo -e "##################################################################"
 echo    " make -k ARCH=arm CROSS_COMPILE=${TOOLCHAIN}- $KERNEL_MAKE_CONFIG"
