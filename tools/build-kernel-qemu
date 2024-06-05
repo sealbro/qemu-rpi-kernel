@@ -12,6 +12,7 @@ INSTALL_PACKAGES=
 # Change to true if you want to clone the repo (takes longer)
 USE_GIT=
 USB_WEBCAM_MODULES=""    # add USB & V4L modules for USB webcam support (didn't work as static)
+# KERNEL_MAKE_CONFIG=olddefconfig # set to olddefconfig to skip user prompting
 KERNEL_MAKE_CONFIG=menuconfig # set to olddefconfig to skip user prompting
 KERNEL_EXTRA_CONFIG=""
 
